@@ -8,7 +8,16 @@
         <Title>Moka.EditorMd</Title>
         <Authors>Jacob William</Authors>
         <Description>Editor.md Component</Description>
-        <PackageIcon>moka-pot.png</PackageIcon>
+        <Version>1.0.0</Version>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Copyright>2023</Copyright>
+        <RepositoryUrl>https://github.com/jacobwi/Moka.Editor.MD/</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+        <PackageTags>Blazor, C#, Markdown</PackageTags>
+        <AssemblyVersion>1.0.0.0</AssemblyVersion>
+        <FileVersion>1.0.0.0</FileVersion>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <PackageIcon>logo.png</PackageIcon>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,10 +28,15 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.9"/>
         <PackageReference Include="Microsoft.JSInterop" Version="7.0.9" />
     </ItemGroup>
+
     <ItemGroup>
-      <None Include="bin\Debug\net7.0\wwwroot\images\moka-pot.png">
+      <None Update="Resources\logo.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Include="bin\Debug\net7.0\Resources\logo.png">
         <Pack>True</Pack>
         <PackagePath></PackagePath>
       </None>
     </ItemGroup>
+ 
 </Project>

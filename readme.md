@@ -1,8 +1,8 @@
-# Moka.Editor.Md 💅
+# 🖋️ Moka.Editor.Md
 
 [![NuGet](https://img.shields.io/nuget/v/Moka.Editor.Md.svg)](https://www.nuget.org/packages/Moka.Editor.Md/) [![NuGet](https://img.shields.io/nuget/dt/Moka.Editor.Md.svg)](https://www.nuget.org/packages/Moka.Editor.Md/)
 
-Moka.Editor.Md is a powerful Markdown editor for Blazor applications, featuring rich text editing capabilities with seamless integration.
+🚀 **Moka.Editor.Md** is a 💪 **powerful Markdown editor** designed for **Blazor applications**. It offers 🎨 **rich text editing capabilities** and 🔄 **seamless integration**, providing a smooth and intuitive experience for users and developers alike.
 
 ## Features
 
