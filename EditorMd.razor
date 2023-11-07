@@ -1,0 +1,73 @@
+@using Microsoft.JSInterop
+@inject IJSRuntime JsRuntime
+
+<div id="@_editorId" style="@CustomStyle"></div>
+
+@code {
+    [Parameter]
+    public string Value { get; set; }
+
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnChange { get; set; }
+
+    [Parameter] public string Theme { get; set; } = "default";
+    [Parameter] public bool SyncScrolling { get; set; } = true;
+    [Parameter] public bool SaveHtmlToTextarea { get; set; } = true;
+    [Parameter] public string CustomStyle { get; set; }
+    [Parameter] public int EditorHeight { get; set; } = 300; // Default height in pixels
+    [Parameter] public bool IsPreviewActive { get; set; }
+    [Parameter] public bool IsReadOnly { get; set; }
+    [Parameter] public bool IsFullScreen { get; set; }
+    [Parameter] public EventCallback<bool> OnFullScreenToggle { get; set; }
+    [Parameter] public string Language { get; set; } = "en"; // Default to English
+
+    private DotNetObjectReference<EditorMd> _objectReference;
+    private string _editorId = $"editor-md-{Guid.NewGuid()}";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _objectReference = DotNetObjectReference.Create(this);
+            await JsRuntime.InvokeVoidAsync("initEditorMd", _editorId, _objectReference, new
+            {
+                value = Value,
+                theme = Theme,
+                syncScrolling = SyncScrolling,
+                saveHtmlToTextarea = SaveHtmlToTextarea,
+                height = EditorHeight,
+                isPreviewActive = IsPreviewActive,
+                isReadOnly = IsReadOnly,
+                isFullScreen = IsFullScreen,
+                language = Language
+
+            });
+        }
+    }
+
+    [JSInvokable]
+    public async Task UpdateContentAsync(string content)
+    {
+        if (Value != content)
+        {
+            Value = content;
+            await ValueChanged.InvokeAsync(Value);
+            await OnChange.InvokeAsync(Value); // Invoke the OnChange event
+        }
+    }
+
+    [JSInvokable]
+    public async Task ToggleFullScreenAsync(bool isFullScreen)
+    {
+        IsFullScreen = isFullScreen;
+        await OnFullScreenToggle.InvokeAsync(IsFullScreen);
+    }
+
+    public void Dispose()
+    {
+        _objectReference?.Dispose();
+    }
+}

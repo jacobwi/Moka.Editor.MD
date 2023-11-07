@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>default</LangVersion>
+        <Title>Moka.EditorMd</Title>
+        <Authors>Jacob William</Authors>
+        <Description>Editor.md Component</Description>
+        <PackageIcon>moka-pot.png</PackageIcon>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <SupportedPlatform Include="browser"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.9"/>
+        <PackageReference Include="Microsoft.JSInterop" Version="7.0.9" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Include="bin\Debug\net7.0\wwwroot\images\moka-pot.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
+    </ItemGroup>
+</Project>
