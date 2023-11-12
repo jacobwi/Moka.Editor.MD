@@ -1,6 +1,6 @@
 @using Microsoft.JSInterop
 @inject IJSRuntime JsRuntime
-
+@namespace Moka.Editor.Md
 <div id="@_editorId" style="@CustomStyle"></div>
 
 @code {
@@ -25,26 +25,35 @@
     [Parameter] public string Language { get; set; } = "en"; // Default to English
 
     private DotNetObjectReference<EditorMd> _objectReference;
-    private string _editorId = $"editor-md-{Guid.NewGuid()}";
+    private readonly string _editorId = $"editor-md-{Guid.NewGuid()}";
+    private bool _isEditorInitialized = false;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             _objectReference = DotNetObjectReference.Create(this);
-            await JsRuntime.InvokeVoidAsync("initEditorMd", _editorId, _objectReference, new
+            try
             {
-                value = Value,
-                theme = Theme,
-                syncScrolling = SyncScrolling,
-                saveHtmlToTextarea = SaveHtmlToTextarea,
-                height = EditorHeight,
-                isPreviewActive = IsPreviewActive,
-                isReadOnly = IsReadOnly,
-                isFullScreen = IsFullScreen,
-                language = Language
+                await JsRuntime.InvokeVoidAsync("initEditorMd", _editorId, _objectReference, new
+                {
+                    value = Value,
+                    theme = Theme,
+                    syncScrolling = SyncScrolling,
+                    saveHtmlToTextarea = SaveHtmlToTextarea,
+                    height = EditorHeight,
+                    isPreviewActive = IsPreviewActive,
+                    isReadOnly = IsReadOnly,
+                    isFullScreen = IsFullScreen,
+                    language = Language
 
-            });
+                });
+            }
+            catch (Exception ex)
+            {
+                 await Console.Error.WriteLineAsync($"Error initializing editor: {ex.Message}");
+            }
+       
         }
     }
 
@@ -58,7 +67,13 @@
             await OnChange.InvokeAsync(Value); // Invoke the OnChange event
         }
     }
-
+    
+    [JSInvokable]
+    public async Task NotifyEditorInitialized()
+    {
+        _isEditorInitialized = true;
+    }
+    
     [JSInvokable]
     public async Task ToggleFullScreenAsync(bool isFullScreen)
     {
@@ -68,6 +83,16 @@
 
     public void Dispose()
     {
+        if (!_isEditorInitialized) return;
         _objectReference?.Dispose();
+        JsRuntime.InvokeVoidAsync("disposeEditorMd", _editorId);
+    }
+    public async ValueTask DisposeAsync()
+    {
+        if (_isEditorInitialized)
+        {
+            _objectReference?.Dispose();
+            await JsRuntime.InvokeVoidAsync("disposeEditorMd", _editorId);
+        }
     }
 }

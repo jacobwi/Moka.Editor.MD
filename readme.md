@@ -56,6 +56,33 @@ For JS:
 <script src="_content/Moka.Editor.Md/js/moka.bundle.min.js" />
 ```
 
+```csharp
+<EditorMdComponent Value="@markdownContent" ValueChanged="@OnContentChanged" />
+
+@code {
+    private string markdownContent = "";
+
+    private void OnContentChanged(string newContent)
+    {
+        markdownContent = newContent;
+    }
+}
+```
+
+#### Parameters and Properties
+- **Value** (string): The Markdown content to be displayed in the editor.
+- **ValueChanged** (EventCallback<string>): Event triggered when the content of the editor changes.
+- **Theme** (string): Specifies the theme for the editor. Default is "default".
+
+#### Events
+
+- **OnChange**: Triggered when the editor content changes.
+
+#### Customization
+```html
+<EditorMdComponent CustomStyle="height: 500px; border: 1px solid gray;" />
+```
+
 ### 🍷 Gulp Tasks
 I use Gulp to automate the bundling and optimization of assets. Here's what each task does:
 
